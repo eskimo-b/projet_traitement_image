@@ -62,6 +62,8 @@ def homography_extraction(I1,x,y,w,h):
 
 points = []
 
+# fonction faite par IA
+
 def onclick(event):
     if event.xdata is None or event.ydata is None:
         return
