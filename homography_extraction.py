@@ -56,7 +56,8 @@ def homography_extraction(I1,x,y,w,h):
             xs, ys = homography_apply(H, i, j) # on applique 
             xs = int(np.round(xs)) # on caste en int pour bien reconstituer I2
             ys = int(np.round(ys))
-            I2[j, i] = I1[ys, xs]
+            if 0 <= xs < I1.shape[1] and 0 <= ys < I1.shape[0]:
+                I2[j, i] = I1[ys, xs]
     return I2
 
 
