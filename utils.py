@@ -62,5 +62,27 @@ def homography_extraction(I1,x,y,w,h):
             I2[j, i] = I1[ys, xs]
     return I2
 
+def homography_cross_projection(I, x1, y1, x2, y2):
+    n = 1024
+    I_cp = I.copy()
+    trampo = np.array((n, n))
+    h,w = I.shape
+    x3 = np.array([0,n-1,n-1,0])
+    y3 = np.array([0,0,n-1,n-1])
+    H1_tramp = homography_estimate(x1, y1, x3, y3)
+    H2_tramp = homography_estimate(x2, y2, x3, y3)
+    H1_2 = homography_estimate(x1, y1, x2, y2)
+    H2_1 = homography_estimate(x2, y2, x1, y1)
+    for j in range(h):
+        for i in range(w):
+            xs_1, ys_1 = homography_apply(H1_tramp, i, j)
+            xs_2, ys_2 = homography_apply(H2_tramp, i, j)
+            if ((0 <= xs_1 < w) and (0 <= ys_1 < h)):
+                xs_1, ys_1 = homography_apply(H1_2, i, j)
+                I[j, i] = I_cp[ys_1, xs_1]
+            if ((0 <= xs_2 < w) and (0 <= ys_2 < h)):
+                xs_2, ys_2 = homography_apply(H2_1, i, j)
+                I[j, i] = I_cp[ys_2, xs_2]
+
 
 
