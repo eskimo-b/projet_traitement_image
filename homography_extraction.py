@@ -6,10 +6,8 @@ Created on Fri Nov 21 11:19:55 2025
 @author: meryem
 """
 import numpy as np
-
-
-x = np.array([1,2,1,3]) 
-y = np.array([3,3,2,2])
+import matplotlib.pyplot as plt
+from PIL import Image
 
 
 def  homography_estimate(x1, y1, x2, y2):
@@ -54,8 +52,44 @@ def homography_extraction(I1,x,y,w,h):
     for j in range(h): #y
         for i in range(w): #x
             xs, ys = homography_apply(H, i, j)
-            xs = np.floor(xs)
-            ys = np.floor(ys)
+            xs = int(np.round(xs))
+            ys = int(np.round(ys))
             I2[j, i] = I1[ys, xs]
     return I2
 
+
+points = []
+
+def onclick(event):
+    if event.xdata is None or event.ydata is None:
+        return
+
+    x = int(event.xdata)
+    y = int(event.ydata)
+
+    points.append([x, y])
+    
+    plt.plot(event.xdata, event.ydata, "ro")
+    plt.draw()
+    
+    if len(points) == 4:
+       plt.close()
+
+    print("\nPoints sélectionnés :", points)
+
+I1 = Image.open('./forme_quadrangulaire.jpg')
+I1_array = np.array(I1)
+plt.figure("Sélection des 4 coins")
+plt.imshow(I1)
+plt.title("Cliquez 4 points dans l'ordre des coins")
+cid = plt.gcf().canvas.mpl_connect("button_press_event", onclick)
+plt.show(block=True)
+
+x = [points[k][0] for k in range(len(points))]
+y = [points[k][1] for k in range(len(points))]
+
+w = 200
+h = 350
+
+result = homography_extraction(I1_array,x,y,w,h)
+plt.imshow(result)
