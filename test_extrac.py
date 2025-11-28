@@ -1,4 +1,4 @@
-from homography_extraction import homography_extraction
+from utils import homography_extraction
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -39,5 +39,13 @@ w = 200
 h = 350
 
 result = homography_extraction(I1_array,x,y,w,h)
+
+plt.figure()
+plt.subplot(1,2,1)
+plt.imshow(I1)
+plt.scatter(x, y, c='r')
+plt.title('Image de base')
+plt.subplot(1,2,2)
 plt.imshow(result)
+plt.title('Image extraite')
 
