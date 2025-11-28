@@ -45,14 +45,16 @@ def homography_apply(H,x1,y1):
 
 
 def homography_extraction(I1,x,y,w,h):
-    I2 = np.zeros((h,w))
-    x2 = np.array([0,w-1,w-1,0])
+    # on initialise I2 et les points x2 et y2 de l'image obtenue
+    I2 = np.zeros((h,w)) 
+    x2 = np.array([0,w-1,w-1,0]) 
     y2 = np.array([0,0,h-1,h-1])
+    # on applique l'homographie entre l'image souhaitée et l'image de base 
     H = homography_estimate(x2,y2,x,y)
     for j in range(h): #y
         for i in range(w): #x
-            xs, ys = homography_apply(H, i, j)
-            xs = int(np.round(xs))
+            xs, ys = homography_apply(H, i, j) # on applique 
+            xs = int(np.round(xs)) # on caste en int pour bien reconstituer I2
             ys = int(np.round(ys))
             I2[j, i] = I1[ys, xs]
     return I2
@@ -77,7 +79,7 @@ def onclick(event):
 
     print("\nPoints sélectionnés :", points)
 
-I1 = Image.open('./forme_quadrangulaire.jpg')
+I1 = Image.open('./img/forme_quadrangulaire.jpg')
 I1_array = np.array(I1)
 plt.figure("Sélection des 4 coins")
 plt.imshow(I1)
@@ -92,4 +94,11 @@ w = 200
 h = 350
 
 result = homography_extraction(I1_array,x,y,w,h)
+
+plt.figure()
+plt.subplot(1,2,1)
+plt.imshow(I1)
+plt.title('Image de base')
+plt.subplot(1,2,2)
 plt.imshow(result)
+plt.title('Image extraite')
