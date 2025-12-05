@@ -50,16 +50,19 @@ def homography_projection(I1, I2, x, y):
     return I2
 
 def homography_extraction(I1,x,y,w,h):
-    I2 = np.zeros((h,w))
-    x2 = np.array([0,w-1,w-1,0])
+    # on initialise I2 et les points x2 et y2 de l'image obtenue
+    I2 = np.zeros((h,w)) 
+    x2 = np.array([0,w-1,w-1,0]) 
     y2 = np.array([0,0,h-1,h-1])
+    # on applique l'homographie entre l'image souhaitée et l'image de base 
     H = homography_estimate(x2,y2,x,y)
     for j in range(h): #y
         for i in range(w): #x
-            xs, ys = homography_apply(H, i, j)
-            xs = int(np.round(xs))
+            xs, ys = homography_apply(H, i, j) # on applique 
+            xs = int(np.round(xs)) # on caste en int pour bien reconstituer I2
             ys = int(np.round(ys))
-            I2[j, i] = I1[ys, xs]
+            if 0 <= xs < I1.shape[1] and 0 <= ys < I1.shape[0]:
+                I2[j, i] = I1[ys, xs]
     return I2
 
 def homography_cross_projection(I, x1, y1, x2, y2):
@@ -83,6 +86,5 @@ def homography_cross_projection(I, x1, y1, x2, y2):
             if ((0 <= xs_2 < w) and (0 <= ys_2 < h)):
                 xs_2, ys_2 = homography_apply(H2_1, i, j)
                 I[j, i] = I_cp[ys_2, xs_2]
-
 
 
