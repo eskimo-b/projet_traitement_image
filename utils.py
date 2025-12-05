@@ -99,6 +99,35 @@ def ItoMIB(I):
     return M, I, B
     
 
-def MIB_Fusion:
-    return 0
+def MIB_Fusion(MIB_tab):
+    n = length(MIB_tab)
+    ~, ~, B = MIB_tab[0]
+    p_min = np.array([B[0], B[1]])
+    p_max = np.array([B[2], B[3]])
+    for i in range(n):
+        ~, ~, B = MIB_tab[i]
+        p_min[0] = min(p_min[0], B[0])
+        p_min[1] = min(p_min[1], B[1])
+        p_max[0] = max(p_max[0], B[2])
+        p_max[1] = max(p_max[1], B[3])
+
+    h,w = p_max[0] - p_min[0], p_max[1] - p_min[1]
+    I = np.array((h,w))
+    for j in range(h):
+        for i in range(w):
+            Nb_point = 0
+            val = 0
+            for k in range(n):
+                M,I,B = MIB_tab[k]
+                # à partir d'ici il manque des choses
+                if (p_min[0] + j < B[0] < p_max[0] + j) and ():
+                    Nb_point = Nb_point + 1
+                    val = val + 
+            I[j][i] = val // Nb_point
+
+    return I
+                
+
+    
+    
 
