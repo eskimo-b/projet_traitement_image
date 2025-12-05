@@ -80,11 +80,25 @@ def homography_cross_projection(I, x1, y1, x2, y2):
         for i in range(w):
             xs_1, ys_1 = homography_apply(H1_tramp, i, j)
             xs_2, ys_2 = homography_apply(H2_tramp, i, j)
-            if ((0 <= xs_1 < w) and (0 <= ys_1 < h)):
+            if ((0 <= xs_1 < n) and (0 <= ys_1 < n)):
                 xs_1, ys_1 = homography_apply(H1_2, i, j)
+                xs_1 = int(np.round(xs_1))
+                ys_1 = int(np.round(ys_1))
                 I[j, i] = I_cp[ys_1, xs_1]
-            if ((0 <= xs_2 < w) and (0 <= ys_2 < h)):
+            if ((0 <= xs_2 < n) and (0 <= ys_2 < n)):
                 xs_2, ys_2 = homography_apply(H2_1, i, j)
+                xs_2 = int(np.round(xs_2))
+                ys_2 = int(np.round(ys_2))
                 I[j, i] = I_cp[ys_2, xs_2]
+    return I
 
+def ItoMIB(I):
+    h,w = I.shape
+    M = np.ones((h,w))
+    B = np.array([0, 0, h-1, w-1])
+    return M, I, B
+    
+
+def MIB_Fusion:
+    return 0
 
