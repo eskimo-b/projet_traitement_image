@@ -113,7 +113,7 @@ def onclick(event):
 
     print("\nPoints sélectionnés :", points)
 
-img = plt.imread('./img/meb.jpg')
+img = plt.imread('./img/mib.jpg')
 I1_array = np.array(img)
 plt.figure("Sélection des 4 coins 2 fois")
 plt.imshow(img)
