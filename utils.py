@@ -65,6 +65,21 @@ def homography_extraction(I1,x,y,w,h):
                 I2[j, i] = I1[ys, xs]
     return I2
 
+def homography_cross_projection_1(I, x1, y1, x2, y2):
+    
+    h,w = 200,200
+    
+    # On extrait Q1 t Q2
+    Q1 = homography_extraction(I, x1, y1, w, h)
+    Q2 = homography_extraction(I, x2, y2, w, h)
+
+    # On projete 
+    r1 = homography_projection(Q1, I, x2, y2)
+    r2 = homography_projection(Q2, r1, x1, y1)
+    
+    return r2
+
+
 def homography_cross_projection(I, x1, y1, x2, y2):
     n = 1024
     I_cp = I.copy()
@@ -101,11 +116,11 @@ def ItoMIB(I):
 
 def MIB_Fusion(MIB_tab):
     n = length(MIB_tab)
-    ~, ~, B = MIB_tab[0]
+    # ~, ~, B = MIB_tab[0]
     p_min = np.array([B[0], B[1]])
     p_max = np.array([B[2], B[3]])
     for i in range(n):
-        ~, ~, B = MIB_tab[i]
+        # ~, ~, B = MIB_tab[i]
         p_min[0] = min(p_min[0], B[0])
         p_min[1] = min(p_min[1], B[1])
         p_max[0] = max(p_max[0], B[2])
@@ -122,7 +137,7 @@ def MIB_Fusion(MIB_tab):
                 # à partir d'ici il manque des choses
                 if (p_min[0] + j < B[0] < p_max[0] + j) and ():
                     Nb_point = Nb_point + 1
-                    val = val + 
+                    # val = val + 
             I[j][i] = val // Nb_point
 
     return I
